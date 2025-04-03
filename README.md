@@ -25,22 +25,36 @@ La solución está compuesta por dos microservicios independientes:
 
 ### Diagrama de arquitectura
 
-```
-+--------------------+       HTTP/JSON API      +----------------------+
-|                    |  <-------------------->  |                      |
-|  Product Service   |                          |  Inventory Service   |
-|  (Puerto 3000)     |                          |  (Puerto 3001)       |
-|                    |                          |                      |
-+--------------------+                          +----------------------+
-         |                                                |
-         |                                                |
-         v                                                v
-+--------------------+                          +----------------------+
-|                    |                          |                      |
-|    PostgreSQL      |                          |    PostgreSQL        |
-|    (products)      |                          |    (inventory)       |
-|                    |                          |                      |
-+--------------------+                          +----------------------+
+```mermaid
+graph TD
+    Client[Cliente] -->|HTTP| Products[Servicio de Productos]
+    Products -->|PostgreSQL| DB[(Base de Datos)]
+    
+    subgraph "Servicio de Productos"
+        Products
+        subgraph "Componentes Internos"
+            Controller[ProductsController]
+            Service[ProductsService]
+            Logger[LoggerService]
+            ExFilter[HttpExceptionFilter]
+        end
+    end
+    
+    Products -->|HTTP/JSON API| Inventory[Servicio de Inventario]
+    
+    Controller -->|Usa| Service
+    Service -->|CRUD| DB
+    Service -->|Usa| Logger
+    Products -->|Usa| ExFilter
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style Products fill:#bbf,stroke:#333,stroke-width:2px
+    style Inventory fill:#bbf,stroke:#333,stroke-width:2px
+    style DB fill:#dfd,stroke:#333,stroke-width:2px
+    style Controller fill:#ffd,stroke:#333,stroke-width:2px
+    style Service fill:#ffd,stroke:#333,stroke-width:2px
+    style Logger fill:#ffd,stroke:#333,stroke-width:2px
+    style ExFilter fill:#ffd,stroke:#333,stroke-width:2px
 ```
 
 ## Tecnologías utilizadas
@@ -74,8 +88,8 @@ La solución está compuesta por dos microservicios independientes:
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/microservicios-productos-inventario.git
-   cd microservicios-productos-inventario
+   git clone https://github.com/tu-usuario/product-service.git
+   cd product-service
    ```
 
 2. Iniciar los servicios con Docker Compose:
@@ -85,9 +99,7 @@ La solución está compuesta por dos microservicios independientes:
 
 3. Los servicios estarán disponibles en:
    - Servicio de Productos: http://localhost:3000
-   - Servicio de Inventario: http://localhost:3001
    - Documentación Swagger de Productos: http://localhost:3000/api/docs
-   - Documentación Swagger de Inventario: http://localhost:3001/api/docs
 
 ### Ejecución local (desarrollo)
 
@@ -147,14 +159,6 @@ La comunicación entre el microservicio de Inventario y el de Productos se reali
 - **Formato**: JSON API para solicitudes y respuestas
 - **Manejo de errores**: Timeout y reintentos para gestionar fallos de comunicación
 - **Eventos**: El microservicio de Inventario emite eventos cuando el inventario cambia
-
-### Ejemplo de flujo:
-
-1. Cliente solicita información de inventario para un producto específico
-2. Microservicio de Inventario:
-   - Busca el inventario del producto
-   - Realiza una petición HTTP al microservicio de Productos para obtener los detalles del producto
-   - Combina la información y retorna una respuesta con formato JSON API
 
 ## Decisiones técnicas
 
