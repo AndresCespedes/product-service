@@ -107,7 +107,7 @@ graph TD
 
 #### Microservicio de Productos
 
-1. Configura tus variables de entorno
+1. Configura tus variables de entorno en un archivo .env
 
 2. Instalar dependencias:
    ```bash
@@ -121,11 +121,7 @@ graph TD
 
 #### Microservicio de Inventario
 
-1. Configurar variables de entorno:
-   ```bash
-   cd inventory-service
-   cp .env.example .env
-   ```
+1. Configura tus variables de entorno en un archivo .env
 
 2. Instalar dependencias:
    ```bash
