@@ -1,4 +1,4 @@
-# Puedes descargar la colección de postman para realizar las preuebas
+# Puedes descargar la colección de postman para realizar las pruebas
 
 [PruebaTecnica.postman_collection.json](https://github.com/user-attachments/files/19595628/PruebaTecnica.postman_collection.json)
 
