@@ -90,7 +90,7 @@ graph TD
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/product-service.git
+   git clone <repository-url>
    cd product-service
    ```
 
