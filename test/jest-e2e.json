@@ -2,8 +2,20 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": ".spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  }
+  },
+  "moduleNameMapper": {
+    "^src/(.*)$": "<rootDir>/../src/$1"
+  },
+  "coverageDirectory": "../coverage-e2e",
+  "collectCoverageFrom": [
+    "../src/**/*.{js,ts}",
+    "!../src/**/*.module.ts",
+    "!../src/**/*.dto.ts",
+    "!../src/**/*.entity.ts",
+    "!../src/main.ts"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/jest-setup.ts"]
 }
