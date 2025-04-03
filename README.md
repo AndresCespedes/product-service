@@ -25,6 +25,7 @@ La solución está compuesta por dos microservicios independientes:
 
 ### Diagrama de arquitectura
 
+
 ```mermaid
 graph TD
     Client[Cliente] -->|HTTP| Products[Servicio de Productos]
