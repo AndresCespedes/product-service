@@ -1,3 +1,7 @@
+# Puedes descargar la colección de postman para realizar las pruebas
+
+[PruebaTecnica.postman_collection.json](https://github.com/user-attachments/files/19595628/PruebaTecnica.postman_collection.json)
+
 # Microservicios de Productos
 
 Este proyecto implementa una solución basada en microservicios para la gestión de productos. La arquitectura está compuesta por dos microservicios independientes que se comunican entre sí mediante peticiones HTTP siguiendo el estándar JSON API.
@@ -14,7 +18,6 @@ Este proyecto implementa una solución basada en microservicios para la gestión
 - [Decisiones técnicas](#decisiones-técnicas)
 - [Pruebas](#pruebas)
 - [Consideraciones de seguridad](#consideraciones-de-seguridad)
-- [Mejoras futuras](#mejoras-futuras)
 
 ## Arquitectura
 
@@ -24,7 +27,6 @@ La solución está compuesta por dos microservicios independientes:
 2. **Microservicio de Inventario**: Gestiona la cantidad disponible de cada producto, consultando la información del producto al microservicio de Productos.
 
 ### Diagrama de arquitectura
-
 
 ```mermaid
 graph TD
@@ -89,8 +91,8 @@ graph TD
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/microservicios-productos-inventario.git
-   cd microservicios-productos-inventario
+   git clone https://github.com/tu-usuario/product-service.git
+   cd product-service
    ```
 
 2. Iniciar los servicios con Docker Compose:
@@ -100,9 +102,7 @@ graph TD
 
 3. Los servicios estarán disponibles en:
    - Servicio de Productos: http://localhost:3000
-   - Servicio de Inventario: http://localhost:3001
    - Documentación Swagger de Productos: http://localhost:3000/api/docs
-   - Documentación Swagger de Inventario: http://localhost:3001/api/docs
 
 ### Ejecución local (desarrollo)
 
@@ -162,14 +162,6 @@ La comunicación entre el microservicio de Inventario y el de Productos se reali
 - **Formato**: JSON API para solicitudes y respuestas
 - **Manejo de errores**: Timeout y reintentos para gestionar fallos de comunicación
 - **Eventos**: El microservicio de Inventario emite eventos cuando el inventario cambia
-
-### Ejemplo de flujo:
-
-1. Cliente solicita información de inventario para un producto específico
-2. Microservicio de Inventario:
-   - Busca el inventario del producto
-   - Realiza una petición HTTP al microservicio de Productos para obtener los detalles del producto
-   - Combina la información y retorna una respuesta con formato JSON API
 
 ## Decisiones técnicas
 
