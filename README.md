@@ -107,11 +107,7 @@ graph TD
 
 #### Microservicio de Productos
 
-1. Configurar variables de entorno:
-   ```bash
-   cd product-service
-   cp .env.example .env
-   ```
+1. Configura tus variables de entorno
 
 2. Instalar dependencias:
    ```bash
