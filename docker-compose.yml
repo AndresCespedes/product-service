@@ -1,0 +1,46 @@
+services:
+  product-service:
+    container_name: product-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres_db
+    environment:
+      DB_HOST: postgres_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: 12345
+      DB_NAME: products
+      API_KEY: secret-key-123
+    networks:
+      - app-network
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - .:/usr/src/app
+      
+  postgres_db:
+    container_name: postgres_db
+    image: postgres:15
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: products
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  app-network:
+    driver: bridge
+    
+volumes:
+  pgdata: {}
