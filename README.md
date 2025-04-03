@@ -25,22 +25,36 @@ La solución está compuesta por dos microservicios independientes:
 
 ### Diagrama de arquitectura
 
-```
-+--------------------+       HTTP/JSON API      +----------------------+
-|                    |  <-------------------->  |                      |
-|  Product Service   |                          |  Inventory Service   |
-|  (Puerto 3000)     |                          |  (Puerto 3001)       |
-|                    |                          |                      |
-+--------------------+                          +----------------------+
-         |                                                |
-         |                                                |
-         v                                                v
-+--------------------+                          +----------------------+
-|                    |                          |                      |
-|    PostgreSQL      |                          |    PostgreSQL        |
-|    (products)      |                          |    (inventory)       |
-|                    |                          |                      |
-+--------------------+                          +----------------------+
+```mermaid
+graph TD
+    Client[Cliente] -->|HTTP| Products[Servicio de Productos]
+    Products -->|PostgreSQL| DB[(Base de Datos)]
+    
+    subgraph "Servicio de Productos"
+        Products
+        subgraph "Componentes Internos"
+            Controller[ProductsController]
+            Service[ProductsService]
+            Logger[LoggerService]
+            ExFilter[HttpExceptionFilter]
+        end
+    end
+    
+    Products -->|HTTP/JSON API| Inventory[Servicio de Inventario]
+    
+    Controller -->|Usa| Service
+    Service -->|CRUD| DB
+    Service -->|Usa| Logger
+    Products -->|Usa| ExFilter
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style Products fill:#bbf,stroke:#333,stroke-width:2px
+    style Inventory fill:#bbf,stroke:#333,stroke-width:2px
+    style DB fill:#dfd,stroke:#333,stroke-width:2px
+    style Controller fill:#ffd,stroke:#333,stroke-width:2px
+    style Service fill:#ffd,stroke:#333,stroke-width:2px
+    style Logger fill:#ffd,stroke:#333,stroke-width:2px
+    style ExFilter fill:#ffd,stroke:#333,stroke-width:2px
 ```
 
 ## Tecnologías utilizadas
