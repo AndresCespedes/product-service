@@ -14,12 +14,10 @@ Este proyecto implementa una solución basada en microservicios para la gestión
 - [Instalación y ejecución](#instalación-y-ejecución)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Endpoints de la API](#endpoints-de-la-api)
-- [Peticiones con postman](#peticiones-con-postman)
 - [Comunicación entre servicios](#comunicación-entre-servicios)
 - [Decisiones técnicas](#decisiones-técnicas)
 - [Pruebas](#pruebas)
 - [Consideraciones de seguridad](#consideraciones-de-seguridad)
-- [Mejoras futuras](#mejoras-futuras)
 
 ## Arquitectura
 
