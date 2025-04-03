@@ -1,73 +1,213 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Microservicios de Productos
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este proyecto implementa una solución basada en microservicios para la gestión de productos. La arquitectura está compuesta por dos microservicios independientes que se comunican entre sí mediante peticiones HTTP siguiendo el estándar JSON API.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tabla de contenidos
 
-## Description
+- [Arquitectura](#arquitectura)
+- [Tecnologías utilizadas](#tecnologías-utilizadas)
+- [Requisitos previos](#requisitos-previos)
+- [Instalación y ejecución](#instalación-y-ejecución)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Endpoints de la API](#endpoints-de-la-api)
+- [Comunicación entre servicios](#comunicación-entre-servicios)
+- [Decisiones técnicas](#decisiones-técnicas)
+- [Pruebas](#pruebas)
+- [Consideraciones de seguridad](#consideraciones-de-seguridad)
+- [Mejoras futuras](#mejoras-futuras)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Arquitectura
 
-## Installation
+La solución está compuesta por dos microservicios independientes:
 
-```bash
-$ npm install
+1. **Microservicio de Productos**: Gestiona la información básica de los productos (id, nombre, precio).
+2. **Microservicio de Inventario**: Gestiona la cantidad disponible de cada producto, consultando la información del producto al microservicio de Productos.
+
+### Diagrama de arquitectura
+
+```
++--------------------+       HTTP/JSON API      +----------------------+
+|                    |  <-------------------->  |                      |
+|  Product Service   |                          |  Inventory Service   |
+|  (Puerto 3000)     |                          |  (Puerto 3001)       |
+|                    |                          |                      |
++--------------------+                          +----------------------+
+         |                                                |
+         |                                                |
+         v                                                v
++--------------------+                          +----------------------+
+|                    |                          |                      |
+|    PostgreSQL      |                          |    PostgreSQL        |
+|    (products)      |                          |    (inventory)       |
+|                    |                          |                      |
++--------------------+                          +----------------------+
 ```
 
-## Running the app
+## Tecnologías utilizadas
+
+- **Backend**: 
+  - NestJS (Node.js)
+  - TypeScript
+  - TypeORM
+  - PostgreSQL
+  - JSON API
+
+- **Documentación**:
+  - Swagger/OpenAPI
+
+- **Contenedores**:
+  - Docker
+  - Docker Compose
+
+- **Pruebas**:
+  - Jest
+
+## Requisitos previos
+
+- Node.js (v14 o superior)
+- Docker y Docker Compose
+- Git
+
+## Instalación y ejecución
+
+### Usando Docker (recomendado)
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/microservicios-productos-inventario.git
+   cd microservicios-productos-inventario
+   ```
+
+2. Iniciar los servicios con Docker Compose:
+   ```bash
+   docker-compose up -d
+   ```
+
+3. Los servicios estarán disponibles en:
+   - Servicio de Productos: http://localhost:3000
+   - Servicio de Inventario: http://localhost:3001
+   - Documentación Swagger de Productos: http://localhost:3000/api/docs
+   - Documentación Swagger de Inventario: http://localhost:3001/api/docs
+
+### Ejecución local (desarrollo)
+
+#### Microservicio de Productos
+
+1. Configurar variables de entorno:
+   ```bash
+   cd product-service
+   cp .env.example .env
+   ```
+
+2. Instalar dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Iniciar en modo desarrollo:
+   ```bash
+   npm run start:dev
+   ```
+
+#### Microservicio de Inventario
+
+1. Configurar variables de entorno:
+   ```bash
+   cd inventory-service
+   cp .env.example .env
+   ```
+
+2. Instalar dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Iniciar en modo desarrollo:
+   ```bash
+   npm run start:dev
+   ```
+
+
+## Endpoints de la API
+
+### Microservicio de Productos
+
+- `GET /products`: Listar todos los productos con paginación
+  - Query params: `page`, `limit`
+- `GET /products/:id`: Obtener un producto por ID
+- `POST /products`: Crear un nuevo producto
+- `PATCH /products/:id`: Actualizar un producto
+- `DELETE /products/:id`: Eliminar un producto
+
+## Comunicación entre servicios
+
+La comunicación entre el microservicio de Inventario y el de Productos se realiza mediante peticiones HTTP con las siguientes características:
+
+- **Autenticación**: Mediante API Keys (encabezado `x-api-key`)
+- **Formato**: JSON API para solicitudes y respuestas
+- **Manejo de errores**: Timeout y reintentos para gestionar fallos de comunicación
+- **Eventos**: El microservicio de Inventario emite eventos cuando el inventario cambia
+
+### Ejemplo de flujo:
+
+1. Cliente solicita información de inventario para un producto específico
+2. Microservicio de Inventario:
+   - Busca el inventario del producto
+   - Realiza una petición HTTP al microservicio de Productos para obtener los detalles del producto
+   - Combina la información y retorna una respuesta con formato JSON API
+
+## Decisiones técnicas
+
+### Base de datos
+
+Se eligió PostgreSQL por las siguientes razones:
+- Integridad referencial: Importante para mantener las relaciones entre productos e inventario
+- Soporte transaccional: Necesario para operaciones atómicas
+- Buen soporte en TypeORM: Facilita el desarrollo y mantenimiento
+- Escalabilidad: Adecuada para el volumen de datos esperado
+
+### Estándar JSON API
+
+Se implementó este estándar para:
+- Proporcionar una experiencia coherente entre los microservicios
+- Facilitar la paginación y las relaciones entre recursos
+- Estandarizar el formato de errores
+- Mejorar la documentación y comprensión de las API
+
+### Logs estructurados
+
+Se implementó un sistema de logs estructurados para:
+- Facilitar el diagnóstico de problemas
+- Mejorar la observabilidad
+- Registrar información importante de manera consistente
+
+### Manejo de excepciones
+
+Se implementaron filtros de excepciones para:
+- Estandarizar las respuestas de error
+- Seguir el formato JSON API
+- Registrar adecuadamente los errores
+
+## Pruebas
+
+### Ejecución de pruebas
 
 ```bash
-# development
-$ npm run start
+# Pruebas unitarias
+npm run test
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Pruebas de cobertura
+npm run test:cov
 ```
 
-## Test
+### Estrategia de pruebas
 
-```bash
-# unit tests
-$ npm run test
+- **Pruebas unitarias**: Para validar la lógica de negocio de cada servicio
+- **Pruebas de integración**: Para validar la comunicación entre microservicios
+- **Pruebas e2e**: Para validar el flujo completo desde el punto de vista del cliente
 
-# e2e tests
-$ npm run test:e2e
+## Consideraciones de seguridad
 
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- **API Keys**: Protegen la comunicación entre microservicios
+- **Validación de datos**: Se implementa validación de datos de entrada en ambos servicios
+- **Configuración de CORS**: Restricciones de origen para prevenir ataques
