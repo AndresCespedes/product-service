@@ -86,7 +86,7 @@ graph TD
 
 ## Instalación y ejecución
 
-### Usando Docker (recomendado)
+### Usando Docker (recomendado) -> ya que de esta manera se realizaron las diferentes pruebas de funcionamiento
 
 1. Clonar el repositorio:
    ```bash
