@@ -1,4 +1,8 @@
-[PruebaTecnica.postman_collection.json](https://github.com/user-attachments/files/19595628/PruebaTecnica.postman_collection.json)# Microservicios de Productos
+# Puedes descargar la colección de postman para realizar las preuebas
+
+[PruebaTecnica.postman_collection.json](https://github.com/user-attachments/files/19595628/PruebaTecnica.postman_collection.json)
+
+# Microservicios de Productos
 
 Este proyecto implementa una solución basada en microservicios para la gestión de productos. La arquitectura está compuesta por dos microservicios independientes que se comunican entre sí mediante peticiones HTTP siguiendo el estándar JSON API.
 
