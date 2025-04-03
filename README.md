@@ -12,7 +12,6 @@ Este proyecto implementa una solución basada en microservicios para la gestión
 - [Tecnologías utilizadas](#tecnologías-utilizadas)
 - [Requisitos previos](#requisitos-previos)
 - [Instalación y ejecución](#instalación-y-ejecución)
-- [Estructura del proyecto](#estructura-del-proyecto)
 - [Endpoints de la API](#endpoints-de-la-api)
 - [Comunicación entre servicios](#comunicación-entre-servicios)
 - [Decisiones técnicas](#decisiones-técnicas)
